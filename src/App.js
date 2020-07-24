@@ -9,7 +9,7 @@ const App = () => {
   const hook = () => {
     axios.get("https://restcountries.eu/rest/v2/all").then((res) => {
       console.log("data obtained");
-      setCountries(res.data.map(a => a.name));
+      setCountries(res.data);
       console.log("data updated");
     });
   };
@@ -26,10 +26,20 @@ const App = () => {
     if (filter === "") {      
       return countries;
     } else {
-      console.log(countries.filter((c) => c.toLowerCase().includes(filter)));
-      return countries.filter((c) => c.toLowerCase().includes(filter));
+      let arr = []
+
+      for(let obj in countries) {
+        if(countries[obj]["name"].toLowerCase().includes(filter)) {
+          arr.push(countries[obj]["name"])
+        }
+      }
+
+
+
+      console.log(arr);
+      return arr
     }
-	};
+  };
 
   return (
     <div>
