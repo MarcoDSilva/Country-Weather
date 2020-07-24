@@ -5,45 +5,39 @@ const App = () => {
   const [countries, setCountries] = useState([]);
   const [filter, setFilter] = useState("");
 
+  // receives the data from the rest api
   const hook = () => {
     axios.get("https://restcountries.eu/rest/v2/all").then((res) => {
       console.log("data obtained");
-      setCountries(res.data.map((country) => country.name));
+      setCountries(res.data.map(a => a.name));
       console.log("data updated");
     });
   };
 
-  useEffect(hook, []);
+  useEffect(hook, []); // applies the api data 
 
+  // handles the filter input box
   const queryHandler = (e) => {
-    const val = e.target.value.toLowerCase();
-    console.log(val);
-    setFilter(val);
-    countryFilter();
+    setFilter(e.target.value.toLowerCase());
   };
 
+  //filter the data by the names
   const countryFilter = () => {
-    if (filter === "") {
-      return;
+    if (filter === "") {      
+      return countries;
     } else {
-      const search = countries.filter((c) => c.toLowerCase().includes(filter));
-      console.log(search);
+      console.log(countries.filter((c) => c.toLowerCase().includes(filter)));
+      return countries.filter((c) => c.toLowerCase().includes(filter));
     }
 	};
-
-	const renderer = () => {
-		if(countries.length > 10) {
-			return ""
-		} else {
-			return countries.map((c, key) => <li key={key}>c</li>)
-		}
-	}
 
   return (
     <div>
       Find countries: <input value={filter} onChange={queryHandler} />
       <ul>
-				 {renderer() == "" ? "Too many matches" : renderer().map((c,i) => <li key={i}>{c}</li>)}
+        {countryFilter().length > 10
+          ? "Too many matches, specify better the filter"
+          : countryFilter().map((c, i) => <li key={i}>{c}</li>)}
       </ul>
     </div>
   );
