@@ -6,14 +6,23 @@ import CountriesList from "./Controllers/CountriesList.js";
 const App = () => {
   const [countries, setCountries] = useState([]);
   const [filter, setFilter] = useState("");
+  const [hidden, setHidden] = useState([]);
 
   // receives the data from the rest api
   const hook = () => {
     axios.get("https://restcountries.eu/rest/v2/all").then((res) => {
-      console.log("data obtained");
       setCountries(res.data);
-      console.log("data updated");
-      console.log(res.data);
+
+      const arr = [];
+      // loop that creates an object and adds it to the array, key name and active
+      for (let i = 0; i < res.data.length; i++) {
+        let obj = {
+          name: res.data[i]["name"],
+          active: false,
+        };
+        arr.push(obj);
+      }
+      setHidden(arr);
     });
   };
 
@@ -36,10 +45,20 @@ const App = () => {
           arr.push(countries[obj]);
         }
       }
-
-      console.log(arr);
       return arr;
     }
+  };
+
+  const showInfo = (c) => {
+    const info = [].concat(hidden);
+
+    for (let i = 0; i < info.length; i++) {
+      if (info[i]["name"] === c) {
+        info[i]["active"] = !info[i]["active"];
+        console.log(info[i]);
+      }
+    }
+    setHidden(info);
   };
 
   return (
@@ -50,7 +69,7 @@ const App = () => {
       ) : countryFilter().length === 1 ? (
         <Country filter={countryFilter} />
       ) : (
-        <CountriesList list={countryFilter} />
+        <CountriesList list={countryFilter} handle={showInfo} hidden={hidden} />
       )}
     </div>
   );

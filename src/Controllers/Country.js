@@ -8,6 +8,7 @@ const Country = ({ filter }) => {
       <p>Population: {country[0]["population"]}</p>
       <p>Capital: {country[0]["capital"]}</p>
       <h4>Languages: </h4>
+      
       <ul>
         {country[0]["languages"].map((lang, i) => (
           <li key={i}>{lang["name"]}</li>
