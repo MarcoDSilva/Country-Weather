@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Country from "./Controllers/Country.js";
 import CountriesList from "./Controllers/CountriesList.js";
+import Weather from "./Controllers/Weather.js"
 
 const App = () => {
   const [countries, setCountries] = useState([]);
@@ -67,7 +68,10 @@ const App = () => {
       {countryFilter().length > 10 ? (
         <p>Too many matches, specify better the filter</p>
       ) : countryFilter().length === 1 ? (
-        <Country filter={countryFilter} />
+        <section>
+          <Country filter={countryFilter} />
+          <Weather capital={countryFilter()[0]["capital"]} />
+        </section>
       ) : (
         <CountriesList list={countryFilter} handle={showInfo} hidden={hidden} />
       )}

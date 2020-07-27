@@ -2,13 +2,14 @@ import React from "react";
 
 const Country = ({ filter }) => {
   const country = filter();
+  
   return (
     <div key={country["alpha2Code"]}>
       <h1>{country[0]["name"]}</h1>
       <p>Population: {country[0]["population"]}</p>
       <p>Capital: {country[0]["capital"]}</p>
       <h4>Languages: </h4>
-      
+
       <ul>
         {country[0]["languages"].map((lang, i) => (
           <li key={i}>{lang["name"]}</li>
